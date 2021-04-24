@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class _UnityEventFloat : UnityEvent<float> {}
@@ -13,7 +14,7 @@ public class HammerScript : MonoBehaviour
 
     protected enum HammerStates
     {
-        INIT, HOLD, SWINGBACK, HOLDUP, SWINGING, HITSTOP
+        INIT, HOLD, SWINGBACK, HOLDUP, SWINGING, HITSTOP, DEAD
     }
     protected HammerStates hammerState;
     public Vector3 relativeRotationPoint;
@@ -31,8 +32,13 @@ public class HammerScript : MonoBehaviour
     //how deep can each hit nail in
     public float maxHitDepth;
 
-protected float rotateAmt; //idk man rotation amount for this frame idc
+    protected float rotateAmt; //idk man rotation amount for this frame idc
 
+    //on nail death, stop hammer
+    public void onDeath()
+    {
+        hammerState = HammerStates.DEAD;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -137,6 +143,11 @@ protected float rotateAmt; //idk man rotation amount for this frame idc
                 hitstopCounter = 0f;
                 hammerState = HammerStates.HOLD;
             }
+            break;
+
+            case HammerStates.DEAD:
+            //don't move
+            if(Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             break;
 
         }

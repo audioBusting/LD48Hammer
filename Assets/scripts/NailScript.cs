@@ -10,6 +10,7 @@ public class NailScript : MonoBehaviour
     public float hpMax;
     public float hpRegen;
     private float hpCur;
+    private bool dead;
 
     public void OnHammerHit(float hitDepth)
     {
@@ -30,12 +31,15 @@ public class NailScript : MonoBehaviour
     void Start()
     {
         hpCur = hpMax;
+        dead = false;
         
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(dead) return;
+        
         //regenerate HP
         hpCur += hpRegen*Time.deltaTime;
         if (hpCur > hpMax) hpCur = hpMax;
@@ -43,5 +47,11 @@ public class NailScript : MonoBehaviour
         float colorRatio = hpCur/hpMax;
         //TODO do a red overlay or something?
         GetComponent<Renderer>().material.SetColor("_Color", new Color(1f,colorRatio,colorRatio));
+
+        if (hpCur < 0)
+        {
+            nailDeath.Invoke();
+            dead = true;
+        }
     }
 }
