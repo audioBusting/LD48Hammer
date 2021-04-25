@@ -12,6 +12,8 @@ public class HammerScript : MonoBehaviour
     [Header("When the hammer hits! passes how deep it hits")]
     public _UnityEventFloat hammerHit;
 
+    public UnityEvent hammerStart;
+
     protected enum HammerStates
     {
         INIT, HOLD, SWINGBACK, HOLDUP, SWINGING, HITSTOP, DEAD
@@ -48,6 +50,7 @@ public class HammerScript : MonoBehaviour
         hitstopCounter = 0f;
 
         if (hammerHit == null) hammerHit = new _UnityEventFloat();
+        if (hammerStart == null) hammerStart = new UnityEvent();
     }
 
     // Update is called once per frame
@@ -60,6 +63,7 @@ public class HammerScript : MonoBehaviour
             {
                 hammerState = HammerStates.HOLD;
                 Debug.Log("going hold mode");
+                hammerStart.Invoke();
             }
             break;
 

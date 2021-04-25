@@ -13,6 +13,7 @@ public class GameOverScript : MonoBehaviour
     {
         //asdf
         dead = true;
+        GetComponent<MeshRenderer>().enabled = true;
     }
 
     // Start is called before the first frame update

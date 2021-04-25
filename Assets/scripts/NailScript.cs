@@ -6,10 +6,14 @@ using UnityEngine.Events;
 public class NailScript : MonoBehaviour
 {
     public UnityEvent nailDeath;
+    [Header("when the nail hits the ball")]
+    public UnityEvent gameEnd;
 
     public float hpMax;
     public float hpRegen;
+    public float regenCooldown;
     private float hpCur;
+    private float regenCur;
     private bool dead;
 
     public void OnHammerHit(float hitDepth)
@@ -19,11 +23,17 @@ public class NailScript : MonoBehaviour
         
         //take damage
         hpCur -= hitDepth;
+        regenCur = regenCooldown;
         //check if dead
         if (hpCur <= 0)
         {
             //TODO die
             nailDeath.Invoke();
+        }
+        
+        if (transform.position.y <= -135)
+        {
+            gameEnd.Invoke();
         }
     }
 
@@ -32,17 +42,21 @@ public class NailScript : MonoBehaviour
     {
         hpCur = hpMax;
         dead = false;
-        
+        regenCur = regenCooldown;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(dead) return;
-        
+
         //regenerate HP
-        hpCur += hpRegen*Time.deltaTime;
-        if (hpCur > hpMax) hpCur = hpMax;
+        regenCur -= Time.deltaTime;
+        if (regenCur <= 0f)
+        {
+            hpCur += hpRegen*Time.deltaTime;
+            if (hpCur > hpMax) hpCur = hpMax;
+        }
 
         float colorRatio = hpCur/hpMax;
         //TODO do a red overlay or something?
