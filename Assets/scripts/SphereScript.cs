@@ -14,6 +14,7 @@ public class SphereScript : MonoBehaviour
     public void onGameEnd()
     {
         gameEnded = true;
+        GetComponent<AudioSource>().Stop();
     }
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class SphereScript : MonoBehaviour
         {
             float scaling = Time.deltaTime * scaleSpeed;
             transform.localScale += new Vector3(scaling, scaling, scaling);
-            if (transform.localScale.x >= 28)
+            if (transform.localScale.x >= 27.5)
             {
                 //asd
                 OnEndAnimFinished.Invoke();

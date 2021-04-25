@@ -28,6 +28,7 @@ public class NailScript : MonoBehaviour
         if (hpCur <= 0)
         {
             //TODO die
+            GetComponent<AudioSource>().Play();
             nailDeath.Invoke();
         }
         

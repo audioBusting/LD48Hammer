@@ -36,6 +36,11 @@ public class HammerScript : MonoBehaviour
 
     protected float rotateAmt; //idk man rotation amount for this frame idc
 
+
+
+    //sound stuff
+    private AudioSource myAudioSrc;
+
     //on nail death, stop hammer
     public void onDeath()
     {
@@ -51,6 +56,7 @@ public class HammerScript : MonoBehaviour
 
         if (hammerHit == null) hammerHit = new _UnityEventFloat();
         if (hammerStart == null) hammerStart = new UnityEvent();
+        myAudioSrc = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -133,6 +139,7 @@ public class HammerScript : MonoBehaviour
                 float hitDepth = swingCounterPeak/backswingMax*maxHitDepth;
                 Debug.Log("hitting down by " + hitDepth);
                 gameObject.transform.position =  startPos - new Vector3(0,hitDepth,0);
+                myAudioSrc.PlayOneShot(myAudioSrc.clip, swingCounterPeak/backswingMax);
                 hammerHit.Invoke(hitDepth);
                 absoluteRotationPoint = transform.position + relativeRotationPoint;
                 Debug.Log("going hitstop");
